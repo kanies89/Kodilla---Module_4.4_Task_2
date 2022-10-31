@@ -33,197 +33,106 @@ Prześlij link do zdalnego repozytorium z zadaniem Mentorowi. Sprawisz mu frajd�
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-x = input('Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: ')
+def choose_operation_type():
+    '''
 
-def is_int(x):
-    """
-    Checks if number taken from input is integer (Input is string type).
 
-    :param x: number to be checked
-    :return: True / False
-    """
-    digit = bool
-    for sign in x:
-        if sign.isdigit() == False:
-            return False
-        if sign.isdigit():
-            digit = True
-    return digit
+    :return:
+    '''
 
-def is_float(x):
-    """
-    Checks if number taken from input is a float (Input is string type).
-
-    :param x: number to be checked
-    :return: True / False
-    """
-    digit = bool
-    i = 0
-    dot = False
-    for sign in x:
-        if sign == '-' and i == 0:
-            i += 1
+    while True:
+        try:
+            x = int(input('Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: '))
+            if x < 1 or x > 4:
+                print("Podane dane to nie liczba naturalna w przedziale 1 - 4!")
+                continue
+        except ValueError:
+            print("Podane dane to nie liczba naturalna w przedziale 1 - 4!")
             continue
-        elif sign == '.' and dot == False:
-            dot = True
-            continue
-        elif sign.isdigit():
-            digit = True
         else:
-            digit = False
-            return digit
-    return digit
+           break
+    z = "{0}".format(x)
+    return z
 
-def is_1to(x, y):
-    """
-    Checks if number taken from input is within range (1 to y+1).
+operation_number = choose_operation_type()
 
-    :param x: number which will be checked
-    :param y: end of range
-    :return: True / False
-    """
-    expected = range(1, y+1)
-    return x in expected
-
-def calculate():
-    '''
-    Calculation function. It doesn't take any arguments.
-    Arguments are received through input method.
-    It outputs a value of one of 4 different operations: addition, subtraction, multiplication, division.
-    You can choose how many numbers will be involved in equasion.
-
-    :return: value of mathematical operation in dedicated text formula
-    '''
-    q = []
+operation_type = {
+    '1': ["Dodawanie", "dodać", "dodawania"],
+    '2': ["Odejmowanie", "odjąć", "odejmowania"],
+    '3': ["Mnozenie", "mnożyć", "mnożenia"],
+    '4': ["Dzielenie", "dzielić", "dzielenia"]
+}
+def check_numbers(x):
+    while True:
+        try:
+            x = int(input(f'Podaj ile liczb chcesz {operation_type[x][1]}: '))
+            if x < 2:
+                print("Działanie {0} musi się składać z conajmniej 2 liczb!".format(operation_type[x[2]]))
+                continue
+        except ValueError:
+            print("Podane dane to nie liczba naturalna!")
+            continue
+        else:
+           break
+    return x
+def calculate(how_many_numbers, calculation_type):
+    i = 1
     result = float()
+    numbers = []
 
-    if x == '1':
-        y = input('Ile liczb chciałbyś dodać? (min.2 liczby): ')
-        while is_int(y) != True:
-            y = input('Podaj cyfrę - int (min. 2): ')
-        while is_int(y) == True:
-            if int(y) > 1:
+    for number in range(0, how_many_numbers):
+        while True:
+            try:
+                if number == 0:
+                    x = float(input(f'Podaj {i} liczbę: '))
+                else:
+                    x = float(input(f'Podaj {i} liczbę, którą chcesz {operation_type[calculation_type][1]}: '))
+                    i += 1
+            except ValueError:
+                print("Podane dane to nie liczba")
+                continue
+            else:
                 break
-            y = input('Podaj cyfrę - int (min. 2): ')
-        i = 0
-        while i < int(y):
-            z = input('Podaj liczbę {0}: '.format(i+1))
-            while is_float(z) != True:
-                z = input('Podaj liczbę - float / int: ')
-            q.append(float(z))
+        if int(calculation_type) == 1:
+            result += x
             i += 1
-
-        for number in q:
-            result += number
-
-        text = str()
-        if len(q) > 2:
-            for n in q[2:]:
-                text += " i " + str(n)
-
-        if __name__ == "__main__":
-            logging.debug(f'Dodawanie liczby: {q[0]} przez: {q[1]}{text}\n')
-        return result
-
-    elif x == '2':
-        y = input('Ile liczb chciałbyś odjąć? (min.2 liczby): ')
-        while is_int(y) != True:
-            y = input('Podaj cyfrę - int (min. 2): ')
-        while is_int(y) == True:
-            if int(y) > 1:
-                break
-            y = input('Podaj cyfrę - int (min. 2): ')
-        i = 0
-        while i < int(y):
-            z = input('Podaj liczbę {0}: '.format(i+1))
-            while is_float(z) != True:
-                z = input('Podaj liczbę - float / int: ')
-            q.append(float(z))
+        elif int(calculation_type) == 2 and number == 0:
+            result = x
             i += 1
-
-        result = q[0]
-        for number in q[1:len(q)]:
-            result -= number
-
-        text = str()
-        if len(q) > 2:
-            for n in q[2:]:
-                text += " i " + str(n)
-
-        if __name__ == "__main__":
-            logging.debug(f'Odejmowanie liczby: {q[0]} przez: {q[1]}{text}\n')
-        return result
-    elif x == '3':
-        y = input('Ile liczb chciałbyś mnożyć? (min. 2 liczby): ')
-        while is_int(y) != True:
-            y = input('Podaj cyfrę - int (min. 2): ')
-        while is_int(y) == True:
-            if int(y) > 1:
-                break
-            y = input('Podaj cyfrę - int (min. 2): ')
-        i = 0
-        while i < int(y):
-            z = input('Podaj liczbę {0}: '.format(i+1))
-            while is_float(z) != True:
-                z = input('Podaj liczbę - float / int: ')
-            q.append(float(z))
+        elif int(calculation_type) == 2 and number > 0:
+            result -= x
             i += 1
-
-        result = q[0]
-        for number in q[1:len(q)]:
-            result *= number
-
-        text = str()
-        if len(q) > 2:
-            for n in q[2:]:
-                text += " i " + str(n)
-
-        if __name__ == "__main__":
-            logging.debug(f'Mnożenie liczby: {q[0]} przez: {q[1]}{text}\n')
-        return result
-    else:
-        y = input('Ile liczb chciałbyś dzielić? (min. 2 liczby): ')
-        while is_int(y) != True:
-            y = input('Podaj cyfrę - int (min. 2): ')
-        while is_int(y) == True:
-            if int(y) > 1:
-                break
-            y = input('Podaj cyfrę - int (min. 2): ')
-        i = 0
-        while i < int(y):
-            z = input('Podaj liczbę {0}: '.format(i+1))
-            while is_float(z) != True:
-                z = input('Podaj liczbę - float / int: ')
-            q.append(float(z))
+        elif int(calculation_type) == 3 and number == 0:
+            result = x
             i += 1
-        j = 1
-        for number in q[1:]:
-            if number == 0:
-                z = input(f'Liczba {j+1} musi być różna od 0!: ')
-                while float(z) == 0:
-                    z = input(f'Liczba {j+1} musi być różna od 0!: ')
-                q[j] = float(z)
-            j += 1
+        elif int(calculation_type) == 3 and number > 0 :
+            result *= x
+            i += 1
+        elif int(calculation_type) == 4 and number == 0:
+            result = x
+            i += 1
+        elif int(calculation_type) == 4 and number > 0 and x == 0:
+            while True:
+                if x == 0:
+                    while True:
+                        try:
+                            x = float(input('Nie można dzielić przez 0, podaj liczbę większą od zera: '))
+                        except ValueError:
+                            continue
+                        else:
+                            if float(x) != 0:
+                                break
+                            continue
+                    i += 1
+                    break
+            result /= x
+        numbers.append(x)
+    print(numbers)
+    return result
 
-        result = q[0]
-        for number in q[1:len(q)]:
-            result /= number
-
-        text = str()
-        if len(q) > 2:
-            for n in q[2:]:
-                text += " i " + str(n)
-        if __name__ == "__main__":
-
-            logging.debug(f'Dzielenie liczby: {q[0]} przez: {q[1]}{text}\n')
-        return result
+print(calculate(check_numbers(operation_number), operation_number))
 
 
-while is_int(x) != True or is_1to(int(x), 5) != True:
-    x = input('Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: ')
-
-
-print(f'Wynik Twojego działania to: {calculate()}')
 
 
 
