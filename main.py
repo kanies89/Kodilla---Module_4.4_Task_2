@@ -30,6 +30,8 @@ Sprawdzaj, czy podana wartość na pewno jest liczbą.
 W wypadku mnożenia i dodawania daj użytkownikowi możliwość wpisania większej ilości argumentów niż tylko dwa, np. możesz dodać do siebie trzy i więcej liczb.
 Prześlij link do zdalnego repozytorium z zadaniem Mentorowi. Sprawisz mu frajdę!
 """
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 x = input('Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: ')
 
@@ -119,8 +121,9 @@ def calculate():
             for n in q[2:]:
                 text += " i " + str(n)
 
-        return print(f'Dodawanie do liczby: {q[0]}, liczb: {q[1]}{text}\n'
-                     f'Wynik Twojego działania to: {result}')
+        if __name__ == "__main__":
+            logging.debug(f'Dodawanie liczby: {q[0]} przez: {q[1]}{text}\n')
+        return result
 
     elif x == '2':
         y = input('Ile liczb chciałbyś odjąć? (min.2 liczby): ')
@@ -147,8 +150,9 @@ def calculate():
             for n in q[2:]:
                 text += " i " + str(n)
 
-        return print(f'Odejmowanie od liczby: {q[0]}, liczb: {q[1]}{text}\n'
-                     f'Wynik Twojego działania to: {result}')
+        if __name__ == "__main__":
+            logging.debug(f'Odejmowanie liczby: {q[0]} przez: {q[1]}{text}\n')
+        return result
     elif x == '3':
         y = input('Ile liczb chciałbyś mnożyć? (min. 2 liczby): ')
         while is_int(y) != True:
@@ -174,8 +178,9 @@ def calculate():
             for n in q[2:]:
                 text += " i " + str(n)
 
-        return print(f'Mnożenie liczby: {q[0]} przez: {q[1]}{text}\n'
-                     f'Wynik Twojego działania to: {result}')
+        if __name__ == "__main__":
+            logging.debug(f'Mnożenie liczby: {q[0]} przez: {q[1]}{text}\n')
+        return result
     else:
         y = input('Ile liczb chciałbyś dzielić? (min. 2 liczby): ')
         while is_int(y) != True:
@@ -208,15 +213,18 @@ def calculate():
         if len(q) > 2:
             for n in q[2:]:
                 text += " i " + str(n)
+        if __name__ == "__main__":
 
-        return print(f'Dzielenie liczby: {q[0]} przez: {q[1]}{text}\n'
-                     f'Wynik Twojego działania to: {result}')
+            logging.debug(f'Dzielenie liczby: {q[0]} przez: {q[1]}{text}\n')
+        return result
 
 
 while is_int(x) != True or is_1to(int(x), 5) != True:
     x = input('Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: ')
 
 
-calculate()
+print(f'Wynik Twojego działania to: {calculate()}')
+
+
 
 
