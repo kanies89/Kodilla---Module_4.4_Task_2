@@ -57,10 +57,10 @@ def choose_operation_type():
 operation_number = choose_operation_type()
 
 operation_type = {
-    '1': ["Dodawanie", "dodać", "dodawania"],
-    '2': ["Odejmowanie", "odjąć", "odejmowania"],
-    '3': ["Mnozenie", "mnożyć", "mnożenia"],
-    '4': ["Dzielenie", "dzielić", "dzielenia"]
+    '1': ["Dodawanie", "dodać", "dodawania", "Dodaję do {0} liczby {1}"],
+    '2': ["Odejmowanie", "odjąć", "odejmowania", "Odejmuję od {0} liczby {1}"],
+    '3': ["Mnozenie", "mnożyć", "mnożenia", "Mnożę {0} przez {1}"],
+    '4': ["Dzielenie", "dzielić", "dzielenia", "Dzielę {0} przez {1}"]
 }
 def check_numbers(x):
     while True:
@@ -75,11 +75,19 @@ def check_numbers(x):
         else:
            break
     return x
+numbers = ['','']
 def calculate(how_many_numbers, calculation_type):
+    """
+    Calculator function. Have 4 different equasions: '+', '-', '*', "/"
+
+    :param how_many_numbers: int attribute taken from input - it tells how many numbers will be in equasion.
+    :param calculation_type: str attribute tells which operation will be in equasion.
+    :return: result of equasion.
+    """
     i = 1
     result = float()
-    numbers = []
-
+    text = ''
+    numbers = ['', '']
     for number in range(0, how_many_numbers):
         while True:
             try:
@@ -87,11 +95,13 @@ def calculate(how_many_numbers, calculation_type):
                     x = float(input(f'Podaj {i} liczbę: '))
                 else:
                     x = float(input(f'Podaj {i} liczbę, którą chcesz {operation_type[calculation_type][1]}: '))
-                    i += 1
             except ValueError:
                 print("Podane dane to nie liczba")
                 continue
             else:
+                if int(calculation_type) == 4:
+                    result /= x
+                    i += 1
                 break
         if int(calculation_type) == 1:
             result += x
@@ -105,12 +115,11 @@ def calculate(how_many_numbers, calculation_type):
         elif int(calculation_type) == 3 and number == 0:
             result = x
             i += 1
-        elif int(calculation_type) == 3 and number > 0 :
+        elif int(calculation_type) == 3 and number > 0:
             result *= x
             i += 1
         elif int(calculation_type) == 4 and number == 0:
             result = x
-            i += 1
         elif int(calculation_type) == 4 and number > 0 and x == 0:
             while True:
                 if x == 0:
@@ -126,12 +135,20 @@ def calculate(how_many_numbers, calculation_type):
                     i += 1
                     break
             result /= x
-        numbers.append(x)
-    print(numbers)
+
+        if number == 0:
+            numbers[0] = x
+        elif number == 1:
+            numbers[1] = str(x)
+        else:
+            text += ' i ' + str(x)
+
+    numbers[1] += text
+    logging.debug(f'{operation_type[str(calculation_type)][3].format(numbers[0], numbers[1])}')
     return result
 
-print(calculate(check_numbers(operation_number), operation_number))
-
+z = check_numbers(operation_number)
+print(calculate(z, operation_number))
 
 
 
