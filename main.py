@@ -35,9 +35,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 def choose_operation_type():
     '''
+    Function that checks if given input is equal to: 1 or 2 or 3 or 4.
 
-
-    :return:
+    :return: input (string)
     '''
 
     while True:
@@ -63,26 +63,33 @@ operation_type = {
     '4': ["Dzielenie", "dzielić", "dzielenia", "Dzielę {0} przez {1}"]
 }
 def check_numbers(x):
+    """
+    Function that checks if given input is number equal or greater than 2
+
+    :param x: input to be checked.
+    :return: input (string) which is equal or greater than 2
+    """
     while True:
         try:
-            x = int(input(f'Podaj ile liczb chcesz {operation_type[x][1]}: '))
-            if x < 2:
-                print("Działanie {0} musi się składać z conajmniej 2 liczb!".format(operation_type[x[2]]))
+            z = int(input(f'Podaj ile liczb chcesz {operation_type[x][1]}: '))
+            if int(z) < 2:
+                print("Działanie {0} musi się składać z conajmniej 2 liczb!".format(operation_type[x][2]))
                 continue
         except ValueError:
             print("Podane dane to nie liczba naturalna!")
             continue
         else:
            break
-    return x
-numbers = ['','']
+    return z
+
+
 def calculate(how_many_numbers, calculation_type):
     """
     Calculator function. Have 4 different equasions: '+', '-', '*', "/"
 
     :param how_many_numbers: int attribute taken from input - it tells how many numbers will be in equasion.
     :param calculation_type: str attribute tells which operation will be in equasion.
-    :return: result of equasion.
+    :return: result of equasion (float).
     """
     i = 1
     result = float()
@@ -147,8 +154,8 @@ def calculate(how_many_numbers, calculation_type):
     logging.debug(f'{operation_type[str(calculation_type)][3].format(numbers[0], numbers[1])}')
     return result
 
-z = check_numbers(operation_number)
-print(calculate(z, operation_number))
+
+print(f'Wynik to: {calculate(check_numbers(operation_number), operation_number)}')
 
 
 
