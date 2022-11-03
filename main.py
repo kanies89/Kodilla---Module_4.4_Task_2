@@ -33,55 +33,75 @@ Prześlij link do zdalnego repozytorium z zadaniem Mentorowi. Sprawisz mu frajd�
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-def choose_operation_type():
+OPERATION_TYPE = {
+    1: ["Dodawanie", "dodać", "dodawania", "Dodaję do {0} liczby {1}"],
+    2: ["Odejmowanie", "odjąć", "odejmowania", "Odejmuję od {0} liczby {1}"],
+    3: ["Mnozenie", "mnożyć", "mnożenia", "Mnożę {0} przez {1}"],
+    4: ["Dzielenie", "dzielić", "dzielenia", "Dzielę {0} przez {1}"]
+}
+def choose_operation_type(z):
     '''
     Function that checks if given input is equal to: 1 or 2 or 3 or 4.
 
     :return: input (string)
     '''
-
+    t = check_int_float(z)
     while True:
-        try:
-            x = int(input('Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: '))
-            if x < 1 or x > 4:
-                print("Podane dane to nie liczba naturalna w przedziale 1 - 4!")
-                continue
-        except ValueError:
-            print("Podane dane to nie liczba naturalna w przedziale 1 - 4!")
+        if  t < 1 or t > 4:
+            t = input("Podane dane to nie liczba naturalna w przedziale 1 - 4!: ")
             continue
         else:
-           break
-    z = "{0}".format(x)
-    return z
+            break
+    return int(t)
 
-operation_number = choose_operation_type()
+def check_int_float(x, y = True):
+    """
+    Checks if user input x is an: int or float. If parameter y is True than method will check if number x is int.
+    If False than it will check if it's a float.
 
-operation_type = {
-    '1': ["Dodawanie", "dodać", "dodawania", "Dodaję do {0} liczby {1}"],
-    '2': ["Odejmowanie", "odjąć", "odejmowania", "Odejmuję od {0} liczby {1}"],
-    '3': ["Mnozenie", "mnożyć", "mnożenia", "Mnożę {0} przez {1}"],
-    '4': ["Dzielenie", "dzielić", "dzielenia", "Dzielę {0} przez {1}"]
-}
+    :param x: input to be checked.
+    :param y: True for int check / False for float check.
+    :return: int / float of input.
+    """
+    z = x
+    while True:
+        try:
+            if y == True:
+                t = 'powinieneś wpisać liczbę całkowitą'
+                int(z)
+            else:
+                t = 'powinieneś wpisać liczbę rzeczywistą'
+                float(z)
+        except ValueError:
+            z = input("Wprowadź poprawne dane - {0}: ".format(t))
+            continue
+        else:
+            break
+
+    if y == True:
+        return int(z)
+    else:
+        return float(z)
+
 def check_numbers(x):
     """
     Function that checks if given input is number equal or greater than 2
 
     :param x: input to be checked.
-    :return: input (string) which is equal or greater than 2
+    :return: input (int) which is equal or greater than 2
     """
-    while True:
-        try:
-            z = int(input(f'Podaj ile liczb chcesz {operation_type[x][1]}: '))
-            if int(z) < 2:
-                print("Działanie {0} musi się składać z conajmniej 2 liczb!".format(operation_type[x][2]))
-                continue
-        except ValueError:
-            print("Podane dane to nie liczba naturalna!")
-            continue
-        else:
-           break
-    return z
 
+    if x == 1 or x == 3:
+        z = input(f'Podaj ile liczb chcesz {OPERATION_TYPE[int(x)][1]}: ')
+        while True:
+            t = check_int_float(z)
+            if t >= 2:
+                return t
+            elif t < 2:
+                print("Działanie {0} musi się składać z conajmniej 2 liczb!".format(OPERATION_TYPE[x][2]))
+                continue
+    else:
+        return 2
 
 def calculate(how_many_numbers, calculation_type):
     """
@@ -92,68 +112,47 @@ def calculate(how_many_numbers, calculation_type):
     :return: result of equasion (float).
     """
     i = 1
-    result = float()
     text = ''
     numbers = ['', '']
     for number in range(0, how_many_numbers):
-        while True:
-            try:
-                if number == 0:
-                    x = float(input(f'Podaj {i} liczbę: '))
-                else:
-                    x = float(input(f'Podaj {i} liczbę, którą chcesz {operation_type[calculation_type][1]}: '))
-            except ValueError:
-                print("Podane dane to nie liczba")
-                continue
-            else:
-                if int(calculation_type) == 4:
-                    result /= x
-                    i += 1
-                break
-        if int(calculation_type) == 1:
-            result += x
-            i += 1
-        elif int(calculation_type) == 2 and number == 0:
+        if number == 0:
+            x = float(input(f'Podaj {i} liczbę: '))
+            check_int_float(x, False)
             result = x
             i += 1
-        elif int(calculation_type) == 2 and number > 0:
-            result -= x
-            i += 1
-        elif int(calculation_type) == 3 and number == 0:
-            result = x
-            i += 1
-        elif int(calculation_type) == 3 and number > 0:
-            result *= x
-            i += 1
-        elif int(calculation_type) == 4 and number == 0:
-            result = x
-        elif int(calculation_type) == 4 and number > 0 and x == 0:
-            while True:
-                if x == 0:
-                    while True:
-                        try:
-                            x = float(input('Nie można dzielić przez 0, podaj liczbę większą od zera: '))
-                        except ValueError:
-                            continue
-                        else:
-                            if float(x) != 0:
-                                break
-                            continue
-                    i += 1
-                    break
-            result /= x
-
+        else:
+            x = float(input(f'Podaj {i} liczbę, którą chcesz {OPERATION_TYPE[calculation_type][1]}: '))
+            if calculation_type == 4:
+                result /= x
+            elif calculation_type == 1:
+                result += x
+            elif calculation_type == 2:
+                result -= x
+            elif calculation_type == 3:
+                result *= x
+            elif calculation_type == 4 and x == 0:
+                x = float(input('Nie można dzielić przez 0, podaj liczbę większą od zera: '))
+                while True:
+                    if check_int_float(x) > 0:
+                        return z
+                    elif check_int_float(z) < 0:
+                        print("Nie można dzielić przez 0!")
+                        continue
+                result /= x
+            i+=1
         if number == 0:
             numbers[0] = x
         elif number == 1:
             numbers[1] = str(x)
         else:
             text += ' i ' + str(x)
-
     numbers[1] += text
-    logging.debug(f'{operation_type[str(calculation_type)][3].format(numbers[0], numbers[1])}')
+    if __name__ == "__main__":
+        logging.debug(f'{OPERATION_TYPE[calculation_type][3].format(numbers[0], numbers[1])}')
     return result
 
+x = input('Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: ')
+operation_number = choose_operation_type(x)
 
 print(f'Wynik to: {calculate(check_numbers(operation_number), operation_number)}')
 
