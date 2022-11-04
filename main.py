@@ -130,7 +130,7 @@ def calculate(how_many_numbers, calculation_type):
                             break
                         else:
                             x = input('Nie można dzielić przez 0, podaj liczbę większą od zera: ')
-                    result /= x
+                    result /= float(x)
                 else:
                     result /= x
             i += 1
