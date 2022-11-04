@@ -115,26 +115,27 @@ def calculate(how_many_numbers, calculation_type):
         else:
             x = input(f'Podaj {i} liczbę, którą chcesz {OPERATION_TYPE[calculation_type][1]}: ')
             x = check_int_float(x, False)
-            if calculation_type == 4 and x == 0:
-                x = input('Nie można dzielić przez 0, podaj liczbę większą od zera: ')
-                x = check_int_float(x, False)
-                while True:
-                    if check_int_float(x, False) != 0:
-                        break
-                    else:
-                        x = input('Nie można dzielić przez 0, podaj liczbę większą od zera: ')
-                result /= x
-            elif calculation_type == 1:
+            if calculation_type == 1:
                 result += x
             elif calculation_type == 2:
                 result -= x
             elif calculation_type == 3:
                 result *= x
             elif calculation_type == 4:
-                result /= x
-            i+=1
+                if x == 0:
+                    x = input('Nie można dzielić przez 0, podaj liczbę większą od zera: ')
+                    x = check_int_float(x, False)
+                    while True:
+                        if check_int_float(x, False) != 0:
+                            break
+                        else:
+                            x = input('Nie można dzielić przez 0, podaj liczbę większą od zera: ')
+                    result /= x
+                else:
+                    result /= x
+            i += 1
         if number == 0:
-            numbers[0] = x
+            numbers[0] = result
         elif number == 1:
             numbers[1] = str(x)
         else:
