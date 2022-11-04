@@ -76,7 +76,6 @@ def check_int_float(x, y = True):
             x = input("Wprowadź poprawne dane - {0}: ".format(t))
         else:
             break
-    print(w)
     return w
 
 def check_numbers(x):
@@ -122,7 +121,7 @@ def calculate(how_many_numbers, calculation_type):
                 while True:
                     if check_int_float(x, False) != 0:
                         break
-                    elif check_int_float(x, False) == 0:
+                    else:
                         x = input('Nie można dzielić przez 0, podaj liczbę większą od zera: ')
                 result /= x
             elif calculation_type == 1:
