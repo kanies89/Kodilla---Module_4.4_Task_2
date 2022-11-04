@@ -50,10 +50,9 @@ def choose_operation_type(z):
         if  t < 1 or t > 4:
             t = input("Podane dane to nie liczba naturalna w przedziale 1 - 4!: ")
             t = check_int_float(t)
-            continue
         else:
             break
-    return int(t)
+    return t
 
 def check_int_float(x, y = True):
     """
@@ -64,20 +63,20 @@ def check_int_float(x, y = True):
     :param y: True for int check / False for float check.
     :return: int / float of input.
     """
-    z = x
+
     while True:
         try:
             if y:
                 t = 'powinieneś wpisać liczbę całkowitą'
-                w = int(z)
+                w = int(x)
             else:
                 t = 'powinieneś wpisać liczbę rzeczywistą'
-                w = float(z)
+                w = float(x)
         except ValueError:
-            z = input("Wprowadź poprawne dane - {0}: ".format(t))
-            continue
+            x = input("Wprowadź poprawne dane - {0}: ".format(t))
         else:
             break
+    print(w)
     return w
 
 def check_numbers(x):
@@ -87,14 +86,13 @@ def check_numbers(x):
     :param x: input to be checked.
     :return: input (int) which is equal or greater than 2
     """
-
     if x == 1 or x == 3:
         z = input(f'Podaj ile liczb chcesz {OPERATION_TYPE[int(x)][1]}: ')
         while True:
             t = check_int_float(z)
             if t >= 2:
                 return t
-            elif t < 2:
+            else:
                 print("Działanie {0} musi się składać z conajmniej 2 liczb!".format(OPERATION_TYPE[x][2]))
     else:
         return 2
@@ -120,20 +118,21 @@ def calculate(how_many_numbers, calculation_type):
             x = check_int_float(x, False)
             if calculation_type == 4 and x == 0:
                 x = input('Nie można dzielić przez 0, podaj liczbę większą od zera: ')
+                x = check_int_float(x, False)
                 while True:
-                    if check_int_float(x, False) > 0:
+                    if check_int_float(x, False) != 0:
                         break
-                    elif check_int_float(x, False) < 0:
+                    elif check_int_float(x, False) == 0:
                         x = input('Nie można dzielić przez 0, podaj liczbę większą od zera: ')
-                result /= float(x)
+                result /= x
             elif calculation_type == 1:
-                result += float(x)
+                result += x
             elif calculation_type == 2:
-                result -= float(x)
+                result -= x
             elif calculation_type == 3:
-                result *= float(x)
+                result *= x
             elif calculation_type == 4:
-                result /= float(x)
+                result /= x
             i+=1
         if number == 0:
             numbers[0] = x
@@ -144,7 +143,6 @@ def calculate(how_many_numbers, calculation_type):
     numbers[1] += text
     logging.debug(f'{OPERATION_TYPE[calculation_type][3].format(numbers[0], numbers[1])}')
     return result
-
 
 if __name__ == "__main__":
     x = input('Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: ')
